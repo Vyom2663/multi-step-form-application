@@ -63,11 +63,14 @@ export default function Dashboard() {
 
   return (
     <div className="p-6 animate-fade-in">
-      <h1 className="text-3xl font-bold mb-4 text-violet-700">📋 Form Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-4 text-violet-700">
+        📋 Form Dashboard
+      </h1>
 
       <div className="mb-6">
         <p className="text-base font-medium mb-2 text-gray-700">
-          Overall Progress: <span className="font-bold">{overallProgress}%</span>
+          Overall Progress:{" "}
+          <span className="font-bold">{overallProgress}%</span>
         </p>
         <Progress value={overallProgress} />
       </div>
@@ -84,7 +87,10 @@ export default function Dashboard() {
           {formStructure.map((section) => (
             <React.Fragment key={section.category}>
               <TableRow className="bg-gray-50">
-                <TableCell colSpan={3} className="font-bold text-violet-800 text-md">
+                <TableCell
+                  colSpan={3}
+                  className="font-bold text-violet-800 text-md"
+                >
                   {section.category}
                 </TableCell>
               </TableRow>

@@ -37,37 +37,50 @@ const routes: {
   },
   "/preferences-information/communication-preferences": {
     title: "Communication Preferences",
-    parent: "Preferences",
+    parent: "Preferences Information",
   },
   "/preferences-information/terms-interests": {
     title: "Terms & Interests",
-    parent: "Preferences",
+    parent: "Preferences Information",
   },
   "/completion": { title: "Completion" },
+  "/personal-information": { title: "Personal Information" },
+  "/contact-information": { title: "Contact Information" },
+  "/preferences-information": { title: "Preferences Information" },
 };
 
-// Function to fetch route metadata safely
-function getPageTitle(path: string) {
+// Get route metadata safely
+function getPageMeta(path: string) {
   return routes[path] || { title: "Unknown Page" };
+}
+
+// Find the path for a given parent title
+function findParentPath(title: string) {
+  return Object.entries(routes).find(([, meta]) => meta.title === title)?.[0];
 }
 
 export default function BreadcrumbNav() {
   const pathname = usePathname();
-  const route = getPageTitle(pathname);
+  const current = getPageMeta(pathname);
+  const parentPath = current.parent ? findParentPath(current.parent) : null;
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {route.parent && (
+        {current.parent && parentPath && (
           <>
             <BreadcrumbItem>
-              <BreadcrumbLink href="#" className="text-violet-900">{route.parent}</BreadcrumbLink>
+              <BreadcrumbLink href={parentPath} className="text-violet-900">
+                {current.parent}
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
           </>
         )}
         <BreadcrumbItem>
-          <BreadcrumbPage className="text-violet-900">{route.title}</BreadcrumbPage>
+          <BreadcrumbPage className="text-violet-900">
+            {current.title}
+          </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

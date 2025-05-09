@@ -105,17 +105,17 @@ const data = {
   forms: [
     {
       name: "Personal Information",
-      url: "/personal-information/basic-details",
+      url: "/personal-information",
       icon: AudioWaveform,
     },
     {
       name: "Contact Information",
-      url: "/contact-information/phone-address",
+      url: "/contact-information",
       icon: Map,
     },
     {
       name: "Preferences",
-      url: "/preferences-information/communication-preferences",
+      url: "/preferences-information",
       icon: Settings2,
     },
   ],
