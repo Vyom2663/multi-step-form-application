@@ -2,16 +2,8 @@
 
 import * as React from "react";
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  // Command,
-  Frame,
   GalleryVerticalEnd,
-  Map,
-  // PieChart,
   Settings2,
-  SquareTerminal,
 } from "lucide-react";
 
 // import { NavMain } from "@/components/layout/nav-main";
@@ -28,6 +20,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { NavForms } from "@/components/nav-forms";
 import { useFormContextCustom } from "@/contexts/form-context";
+import { MdDashboardCustomize } from "react-icons/md";
+import { SiPrivateinternetaccess } from "react-icons/si";
+import { MdConnectWithoutContact } from "react-icons/md";
 
 // This is sample data.
 const data = {
@@ -43,75 +38,75 @@ const data = {
       plan: "Enterprise",
     },
   ],
-  navMain: [
-    {
-      title: "Personal Information",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "Basic Details",
-          url: "#",
-        },
-        {
-          title: "Additional Details",
-          url: "#",
-        },
-        {
-          title: "Professional Details",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Contact Information",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Phone & Address",
-          url: "#",
-        },
-        {
-          title: "Additional Contacts",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Preferences",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Communication Preferences",
-          url: "#",
-        },
-        {
-          title: "Terms & Interests",
-          url: "#",
-        },
-      ],
-    },
-  ],
+  // navMain: [
+  //   {
+  //     title: "Personal Information",
+  //     url: "#",
+  //     icon: SquareTerminal,
+  //     isActive: true,
+  //     items: [
+  //       {
+  //         title: "Basic Details",
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Additional Details",
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Professional Details",
+  //         url: "#",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "Contact Information",
+  //     url: "#",
+  //     icon: Bot,
+  //     items: [
+  //       {
+  //         title: "Phone & Address",
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Additional Contacts",
+  //         url: "#",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "Preferences",
+  //     url: "#",
+  //     icon: BookOpen,
+  //     items: [
+  //       {
+  //         title: "Communication Preferences",
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Terms & Interests",
+  //         url: "#",
+  //       },
+  //     ],
+  //   },
+  // ],
   projects: [
     {
       name: "Dashboard",
       url: "/dashboard",
-      icon: Frame,
+      icon: MdDashboardCustomize,
     },
   ],
   forms: [
     {
       name: "Personal Information",
       url: "/personal-information",
-      icon: AudioWaveform,
+      icon: SiPrivateinternetaccess,
     },
     {
       name: "Contact Information",
       url: "/contact-information",
-      icon: Map,
+      icon: MdConnectWithoutContact,
     },
     {
       name: "Preferences",

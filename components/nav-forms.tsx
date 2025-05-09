@@ -1,14 +1,6 @@
 "use client"
 
 import {
-//   Folder,
-//   Forward,
-//   MoreHorizontal,
-//   Trash2,
-  type LucideIcon,
-} from "lucide-react"
-
-import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
@@ -24,7 +16,7 @@ export function NavForms({
   forms: {
     name: string
     url: string
-    icon: LucideIcon
+    icon: React.ElementType
   }[]
 }) {
 
