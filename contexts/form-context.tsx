@@ -44,33 +44,6 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentForm, setCurrentForm] = useState(formOrder[0]);
   const [completedForms, setCompletedForms] = useState<string[]>([]);
 
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("completedForms") || "[]");
-    setCompletedForms(stored);
-  }, []);
-
-  useEffect(() => {
-    const found = formOrder.find((name) => formRoutes[name] === pathname);
-    if (found) {
-      setCurrentForm(found);
-    }
-  }, [pathname]);
-
-  useEffect(() => {
-    const found = formOrder.find((name) => formRoutes[name] === pathname);
-    if (!found) return;
-
-    const index = formOrder.indexOf(found);
-
-    if (index === 0 || completedForms.includes(formOrder[index - 1])) {
-      setCurrentForm(found);
-    } else {
-      const lastUnlockedIndex = completedForms.length;
-      const lastUnlockedForm = formOrder[Math.max(0, lastUnlockedIndex)];
-      router.push(formRoutes[lastUnlockedForm]);
-    }
-  }, [pathname, completedForms, router]);
-
   const markFormComplete = (formName: string) => {
     const updated = [...new Set([...completedForms, formName])];
     localStorage.setItem("completedForms", JSON.stringify(updated));
@@ -108,6 +81,33 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
     setCurrentForm(formOrder[0]);
     router.push("/");
   };
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("completedForms") || "[]");
+    setCompletedForms(stored);
+  }, []);
+
+  useEffect(() => {
+    const found = formOrder.find((name) => formRoutes[name] === pathname);
+    if (found) {
+      setCurrentForm(found);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    const found = formOrder.find((name) => formRoutes[name] === pathname);
+    if (!found) return;
+
+    const index = formOrder.indexOf(found);
+
+    if (index === 0 || completedForms.includes(formOrder[index - 1])) {
+      setCurrentForm(found);
+    } else {
+      const lastUnlockedIndex = completedForms.length;
+      const lastUnlockedForm = formOrder[Math.max(0, lastUnlockedIndex)];
+      router.push(formRoutes[lastUnlockedForm]);
+    }
+  }, [pathname, completedForms, router]);
 
   return (
     <FormContext.Provider
