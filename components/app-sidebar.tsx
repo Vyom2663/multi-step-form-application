@@ -6,9 +6,7 @@ import {
   Settings2,
 } from "lucide-react";
 
-// import { NavMain } from "@/components/layout/nav-main";
 import { NavProjects } from "@/components/nav-projects";
-// import { NavUser } from "@/components/layout/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
@@ -16,6 +14,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { NavForms } from "@/components/nav-forms";
@@ -23,6 +22,8 @@ import { useFormContextCustom } from "@/contexts/form-context";
 import { MdDashboardCustomize } from "react-icons/md";
 import { SiPrivateinternetaccess } from "react-icons/si";
 import { MdConnectWithoutContact } from "react-icons/md";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
+import { RotateCw } from "lucide-react"
 
 // This is sample data.
 const data = {
@@ -38,58 +39,6 @@ const data = {
       plan: "Enterprise",
     },
   ],
-  // navMain: [
-  //   {
-  //     title: "Personal Information",
-  //     url: "#",
-  //     icon: SquareTerminal,
-  //     isActive: true,
-  //     items: [
-  //       {
-  //         title: "Basic Details",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Additional Details",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Professional Details",
-  //         url: "#",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "Contact Information",
-  //     url: "#",
-  //     icon: Bot,
-  //     items: [
-  //       {
-  //         title: "Phone & Address",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Additional Contacts",
-  //         url: "#",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "Preferences",
-  //     url: "#",
-  //     icon: BookOpen,
-  //     items: [
-  //       {
-  //         title: "Communication Preferences",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Terms & Interests",
-  //         url: "#",
-  //       },
-  //     ],
-  //   },
-  // ],
   projects: [
     {
       name: "Dashboard",
@@ -118,6 +67,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { resetFormProgress } = useFormContextCustom();
+  const { state } = useSidebar();
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -127,16 +77,32 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavProjects projects={data.projects} />
         <NavForms forms={data.forms} />
-        {/* <NavMain items={data.navMain} /> */}
       </SidebarContent>
       <SidebarFooter>
-        {/* <NavUser user={data.user} /> */}
-        <Button
-          className="flex-1 bg-purple-400 hover:bg-purple-900 cursor-pointer"
-          onClick={resetFormProgress}
-        >
-          Reset All forms
-        </Button>
+        {state === "collapsed" ? (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={resetFormProgress}
+                className="bg-purple-400 hover:bg-purple-900 text-white hover:text-white"
+              >
+                <RotateCw size={20} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" align="center">
+              Reset All forms
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          <Button
+            className="flex-1 bg-purple-400 hover:bg-purple-900 cursor-pointer"
+            onClick={resetFormProgress}
+          >
+            Reset All forms
+          </Button>
+        )}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
