@@ -19,7 +19,8 @@ const formRoutes: Record<string, string> = {
   "Professional Details": "/personal-information/professional-details",
   "Phone & Address": "/contact-information/phone-address",
   "Additional Contacts": "/contact-information/additional-contacts",
-  "Communication Preferences": "/preferences-information/communication-preferences",
+  "Communication Preferences":
+    "/preferences-information/communication-preferences",
   "Terms & Interests": "/preferences-information/terms-interests",
 };
 
@@ -55,6 +56,21 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [pathname]);
 
+  useEffect(() => {
+    const found = formOrder.find((name) => formRoutes[name] === pathname);
+    if (!found) return;
+
+    const index = formOrder.indexOf(found);
+
+    if (index === 0 || completedForms.includes(formOrder[index - 1])) {
+      setCurrentForm(found);
+    } else {
+      const lastUnlockedIndex = completedForms.length;
+      const lastUnlockedForm = formOrder[Math.max(0, lastUnlockedIndex)];
+      router.push(formRoutes[lastUnlockedForm]);
+    }
+  }, [pathname, completedForms, router]);
+
   const markFormComplete = (formName: string) => {
     const updated = [...new Set([...completedForms, formName])];
     localStorage.setItem("completedForms", JSON.stringify(updated));
@@ -66,8 +82,7 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
     if (currentIndex < formOrder.length - 1) {
       const nextForm = formOrder[currentIndex + 1];
       router.push(formRoutes[nextForm]);
-    }
-    else{
+    } else {
       router.push("/completion");
     }
   };
@@ -91,9 +106,8 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("multiStepFormData");
     setCompletedForms([]);
     setCurrentForm(formOrder[0]);
-    router.push("/")
+    router.push("/");
   };
-  
 
   return (
     <FormContext.Provider
