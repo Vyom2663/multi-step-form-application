@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
+import { useRouter } from "next/navigation"; // ✅ import router
 import { useFormContextCustom } from "@/contexts/form-context";
-import { PlayIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Edit3, PlayCircle } from "lucide-react";
 
 type Form = {
   name: string;
@@ -29,6 +29,7 @@ type Props = {
 export default function FormCategoryTable({ title, forms }: Props) {
   const [completedForms, setCompletedForms] = useState<string[]>([]);
   const { setCurrentForm, isFormUnlocked } = useFormContextCustom();
+  const router = useRouter(); // ✅ initialize router
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("completedForms") || "[]");
@@ -58,7 +59,6 @@ export default function FormCategoryTable({ title, forms }: Props) {
 
             return (
               <TableRow key={name}>
-                {/* Radio-style indicator and name */}
                 <TableCell className="flex items-center space-x-2">
                   <span
                     className={cn(
@@ -73,31 +73,40 @@ export default function FormCategoryTable({ title, forms }: Props) {
                   <span>{name}</span>
                 </TableCell>
 
-                {/* Badge Status */}
                 <TableCell>
                   <Badge variant={isCompleted ? "success" : "secondary"}>
                     {status}
                   </Badge>
                 </TableCell>
 
-                {/* Start/Edit button */}
                 <TableCell className="text-right">
-                  <Link href={path}>
-                    <Button
-                      onClick={() => setCurrentForm(name)}
-                      disabled={!unlocked}
-                      className={cn(
-                        "flex items-center space-x-2",
-                        !unlocked && "opacity-50 grayscale cursor-not-allowed",
-                        isCompleted
-                          ? "border border-gray-300"
-                          : "bg-black hover:bg-black text-white cursor-pointer"
-                      )}
-                    >
-                      <PlayIcon size={16} />
-                      <span>{isCompleted ? "Edit" : "Start"}</span>
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={() => {
+                      if (unlocked) {
+                        setCurrentForm(name);
+                        router.push(path);
+                      } else {
+                        console.warn("Form is locked");
+                      }
+                    }}
+                    variant={isCompleted ? "outline" : "default"}
+                    className={cn(
+                      "flex items-center space-x-2",
+                      !unlocked && "opacity-50 grayscale cursor-not-allowed"
+                    )}
+                  >
+                    {isCompleted ? (
+                      <>
+                        <Edit3 className="w-4 h-4" />
+                        <span>Edit</span>
+                      </>
+                    ) : (
+                      <>
+                        <PlayCircle className="w-4 h-4" />
+                        <span>Start</span>
+                      </>
+                    )}
+                  </Button>
                 </TableCell>
               </TableRow>
             );

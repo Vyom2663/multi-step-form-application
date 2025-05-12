@@ -20,6 +20,7 @@ export default function AdditionalContactsForm() {
     reset,
     formState: { errors, isValid },
   } = useForm<AdditionalContactsFormData>({
+    mode: "onChange",
   });
 
   useEffect(() => {

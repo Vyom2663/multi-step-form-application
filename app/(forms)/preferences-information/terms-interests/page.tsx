@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useFormContextCustom } from "@/contexts/form-context";
 import { getStepData, setStepData } from "@/utils/form-storage";
+import { Input } from "@/components/ui/input";
 
 type TermsFormData = {
   interests: string[];
@@ -15,7 +16,7 @@ type TermsFormData = {
 
 export default function TermsAndInterestsForm() {
   const {
-    // register,
+    register,
     handleSubmit,
     setValue,
     watch,
@@ -32,32 +33,29 @@ export default function TermsAndInterestsForm() {
   const { navigateToNextForm, navigateToPreviousForm, markFormComplete } =
     useFormContextCustom();
 
+  const selectedInterests = watch("interests") || [];
   const agreeToTerms = watch("agreeToTerms");
 
   useEffect(() => {
     const saved = getStepData("Terms & Interests");
     if (saved) {
       if (saved.interests) {
-        setValue("interests", saved.interests);
+        setValue("interests", saved.interests, { shouldValidate: true });
       }
       if (saved.agreeToTerms !== undefined) {
-        setValue("agreeToTerms", saved.agreeToTerms);
+        setValue("agreeToTerms", saved.agreeToTerms, { shouldValidate: true });
       }
-
-      trigger();
     }
+    trigger();
   }, [setValue, trigger]);
 
   const onSubmit = (data: TermsFormData) => {
-    console.log("Submitted:", data);
     setStepData("Terms & Interests", data);
     markFormComplete("Terms & Interests");
     navigateToNextForm();
   };
 
-  const selectedInterests = watch("interests") || [];
-
-  const toggleInterest = (interest: string) => {
+  const handleInterestChange = (interest: string) => {
     const updated = selectedInterests.includes(interest)
       ? selectedInterests.filter((item) => item !== interest)
       : [...selectedInterests, interest];
@@ -74,48 +72,63 @@ export default function TermsAndInterestsForm() {
           proceed.
         </p>
       </div>
-      <div>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-sm">
-          <div>
-            <Label className="mb-2 block">Select Your Interests</Label>
-            {["Technology", "Art", "Sports", "Other"].map((interest) => (
-              <div className="flex items-center space-x-2" key={interest}>
-                <Checkbox
-                  id={interest}
-                  checked={selectedInterests.includes(interest)}
-                  onCheckedChange={() => toggleInterest(interest)}
-                />
-                <Label htmlFor={interest}>{interest}</Label>
-              </div>
-            ))}
-            {errors.interests && (
-              <p className="text-sm text-red-500 mt-1">
-                Please select at least one interest.
-              </p>
-            )}
-          </div>
 
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="agreeToTerms"
-              checked={agreeToTerms}
-              onCheckedChange={(checked) =>
-                setValue("agreeToTerms", !!checked, { shouldValidate: true })
-              }
-            />
-            <Label htmlFor="agreeToTerms">
-              I agree to the terms and conditions
-            </Label>
-          </div>
-          {errors.agreeToTerms && (
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-sm">
+        <div>
+          <Label className="mb-2 block">Select Your Interests</Label>
+          {["Technology", "Art", "Sports", "Other"].map((interest) => (
+            <div className="flex items-center space-x-2" key={interest}>
+              <Checkbox
+                id={interest}
+                checked={selectedInterests.includes(interest)}
+                onCheckedChange={() => handleInterestChange(interest)}
+              />
+              <Label htmlFor={interest}>{interest}</Label>
+            </div>
+          ))}
+          <input
+            type="hidden"
+            {...register("interests", {
+              validate: (value) =>
+                value.length > 0 || "Please select at least one interest",
+            })}
+          />
+          {errors.interests && (
             <p className="text-sm text-red-500 mt-1">
-              {errors.agreeToTerms.message}
+              {errors.interests.message}
             </p>
           )}
+        </div>
 
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="agreeToTerms"
+            checked={agreeToTerms}
+            onCheckedChange={(checked) =>
+              setValue("agreeToTerms", !!checked, { shouldValidate: true })
+            }
+          />
+          <Label htmlFor="agreeToTerms" className="text-red-500">
+            I agree to the terms and conditions
+          </Label>
+        </div>
+        <Input
+          type="hidden"
+          {...register("agreeToTerms", {
+            validate: (value) =>
+              value === true || "You must agree to the terms",
+          })}
+        />
+        {errors.agreeToTerms && (
+          <p className="text-sm text-red-500 mt-1">
+            {errors.agreeToTerms.message}
+          </p>
+        )}
+
+        <div className="flex gap-2">
           <Button
             type="button"
-            className="bg-white text-black hover:bg-black hover:text-white cursor-pointer mr-2"
+            className="bg-white text-black hover:bg-black hover:text-white cursor-pointer"
             onClick={navigateToPreviousForm}
           >
             Previous
@@ -123,12 +136,12 @@ export default function TermsAndInterestsForm() {
           <Button
             type="submit"
             disabled={!isValid}
-            className="bg-violet-900 hover:bg-violet-900 cursor-pointer"
+            className="bg-violet-900 hover:bg-violet-900 cursor-pointer text-white"
           >
             Next
           </Button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

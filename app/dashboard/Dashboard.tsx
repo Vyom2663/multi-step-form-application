@@ -123,26 +123,36 @@ export default function Dashboard() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Link href={formRoutes[formName]}>
+                      {isFormUnlocked(formName) ? (
+                        <Link href={formRoutes[formName]}>
+                          <Button
+                            onClick={() => setCurrentForm(formName)}
+                            variant={isCompleted ? "outline" : "default"}
+                            className="flex items-center space-x-2 cursor-pointer"
+                          >
+                            {isCompleted ? (
+                              <>
+                                <Edit3 className="w-4 h-4" />
+                                <span>Edit</span>
+                              </>
+                            ) : (
+                              <>
+                                <PlayCircle className="w-4 h-4" />
+                                <span>Start</span>
+                              </>
+                            )}
+                          </Button>
+                        </Link>
+                      ) : (
                         <Button
-                          onClick={() => setCurrentForm(formName)}
-                          disabled={!isFormUnlocked(formName)}
-                          variant={isCompleted ? "outline" : "default"}
-                          className="flex items-center space-x-2"
+                          disabled
+                          variant="outline"
+                          className="flex items-center space-x-2 opacity-50 cursor-not-allowed"
                         >
-                          {isCompleted ? (
-                            <>
-                              <Edit3 className="w-4 h-4" />
-                              <span>Edit</span>
-                            </>
-                          ) : (
-                            <>
-                              <PlayCircle className="w-4 h-4" />
-                              <span>Start</span>
-                            </>
-                          )}
+                          <PlayCircle className="w-4 h-4" />
+                          <span>Locked</span>
                         </Button>
-                      </Link>
+                      )}
                     </TableCell>
                   </motion.tr>
                 );

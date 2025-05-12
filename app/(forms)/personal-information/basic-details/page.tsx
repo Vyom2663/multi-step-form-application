@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,12 +22,6 @@ type BasicDetailsFormData = {
 };
 
 export default function BasicDetailsForm() {
-  const [defaultValues, setDefaultValues] = useState<BasicDetailsFormData>({
-    name: "",
-    email: "",
-    gender: "" ,
-  });
-
   const {
     register,
     handleSubmit,
@@ -36,25 +30,25 @@ export default function BasicDetailsForm() {
     reset,
   } = useForm<BasicDetailsFormData>({
     mode: "onChange",
-    defaultValues,
+    defaultValues: {
+      name: "",
+      email: "",
+      gender: "",
+    },
   });
 
+  // 👇 Load saved data every time component mounts
   useEffect(() => {
     const saved = getStepData("Basic Details");
     if (saved) {
-      setDefaultValues(saved);
+      reset(saved);
     }
-  }, []);
-
-  useEffect(() => {
-    reset(defaultValues);
-  }, [defaultValues, reset]);
+  }, [reset]);
 
   const { navigateToNextForm, navigateToPreviousForm, markFormComplete } =
     useFormContextCustom();
 
   const onSubmit = (data: BasicDetailsFormData) => {
-    console.log("Submitted:", data);
     setStepData("Basic Details", data);
     markFormComplete("Basic Details");
     navigateToNextForm();
@@ -101,9 +95,9 @@ export default function BasicDetailsForm() {
             name="gender"
             rules={{ required: "Gender is required" }}
             render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
+              <Select onValueChange={field.onChange} value={field.value || ""}>
                 <SelectTrigger id="gender">
-                  <SelectValue placeholder="Select gender"/>
+                  <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="male">Male</SelectItem>

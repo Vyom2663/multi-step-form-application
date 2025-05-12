@@ -20,6 +20,7 @@ export default function PhoneAddressForm() {
     reset,
     formState: { errors, isValid },
   } = useForm<PhoneAddressFormData>({
+    mode: "onChange",
   });
 
   const { navigateToNextForm, navigateToPreviousForm, markFormComplete } =
