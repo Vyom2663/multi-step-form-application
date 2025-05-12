@@ -12,7 +12,6 @@ import { Toaster } from "sonner";
 import { Suspense } from "react";
 import BreadcrumbNav from "@/components/breadcrumpnav";
 import { FormProvider } from "@/contexts/form-context";
-// import MultiStepForm from "./step-form/MultiStepForm";
 
 export const metadata: Metadata = {
   title: "Multi Step Form",
@@ -33,7 +32,7 @@ export default function RootLayout({
             <SidebarInset>
               <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 bg-gray-100">
                 <div className="flex items-center gap-2 px-4">
-                  <SidebarTrigger className="-ml-1" />
+                  <SidebarTrigger className="-ml-1 cursor-pointer" />
                   <Separator orientation="vertical" className="mr-2 h-4" />
                   <Suspense fallback={<div>Loading breadcrumbs...</div>}>
                     <BreadcrumbNav />
@@ -43,7 +42,6 @@ export default function RootLayout({
               <div className="flex flex-1 flex-col gap-4 p-8 pt-8">
                 {children}
                 <Toaster richColors position="top-right" />
-                {/* <MultiStepForm /> */}
               </div>
             </SidebarInset>
           </FormProvider>

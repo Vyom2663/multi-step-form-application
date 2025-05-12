@@ -46,7 +46,7 @@ export default function Completion() {
               Go to Dashboard
             </Button>
             <Button
-              className="flex-1 bg-purple-400 hover:bg-purple-900 cursor-pointer"
+              className="flex-1 bg-purple-500 hover:bg-purple-900 cursor-pointer"
               onClick={resetFormProgress}
             >
               Start Over

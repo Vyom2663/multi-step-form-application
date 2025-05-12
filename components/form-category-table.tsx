@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation"; // ✅ import router
 import { useFormContextCustom } from "@/contexts/form-context";
 import { cn } from "@/lib/utils";
-import { Edit3, PlayCircle } from "lucide-react";
+import { CheckCircle, Circle, Edit3, PlayCircle } from "lucide-react";
 
 type Form = {
   name: string;
@@ -60,16 +60,16 @@ export default function FormCategoryTable({ title, forms }: Props) {
             return (
               <TableRow key={name}>
                 <TableCell className="flex items-center space-x-2">
-                  <span
-                    className={cn(
-                      "w-4 h-4 rounded-full border-2",
-                      isCompleted
-                        ? "border-green-500 bg-green-500"
-                        : unlocked
-                        ? "border-gray-400 bg-white"
-                        : "border-gray-300 bg-gray-200"
-                    )}
-                  ></span>
+                  {isCompleted ? (
+                    <CheckCircle className="text-green-600 w-5 h-5" />
+                  ) : (
+                    <Circle
+                      className={cn(
+                        "w-5 h-5",
+                        unlocked ? "text-gray-400" : "text-gray-300"
+                      )}
+                    />
+                  )}
                   <span>{name}</span>
                 </TableCell>
 

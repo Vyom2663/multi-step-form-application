@@ -86,7 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 size="icon"
                 variant="ghost"
                 onClick={resetFormProgress}
-                className="bg-purple-400 hover:bg-purple-900 text-white hover:text-white"
+                className="bg-purple-500 hover:bg-purple-900 text-white hover:text-white"
               >
                 <RotateCw size={20} />
               </Button>
@@ -97,7 +97,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </Tooltip>
         ) : (
           <Button
-            className="flex-1 bg-purple-400 hover:bg-purple-900 cursor-pointer"
+            className="flex-1 bg-purple-500 hover:bg-purple-900 cursor-pointer"
             onClick={resetFormProgress}
           >
             Reset All forms
