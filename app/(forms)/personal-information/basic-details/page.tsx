@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,12 @@ type BasicDetailsFormData = {
 };
 
 export default function BasicDetailsForm() {
+  const [defaultValues, setDefaultValues] = useState<BasicDetailsFormData>({
+    name: "",
+    email: "",
+    gender: "",
+  });
+
   const {
     register,
     handleSubmit,
@@ -30,25 +36,26 @@ export default function BasicDetailsForm() {
     reset,
   } = useForm<BasicDetailsFormData>({
     mode: "onChange",
-    defaultValues: {
-      name: "",
-      email: "",
-      gender: "",
-    },
+    defaultValues,
   });
 
-  // 👇 Load saved data every time component mounts
   useEffect(() => {
     const saved = getStepData("Basic Details");
     if (saved) {
-      reset(saved);
+      setDefaultValues(saved);
     }
-  }, [reset]);
+  }, []);
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues, reset]);
+
 
   const { navigateToNextForm, navigateToPreviousForm, markFormComplete } =
     useFormContextCustom();
 
   const onSubmit = (data: BasicDetailsFormData) => {
+    console.log("Submitted:", data);
     setStepData("Basic Details", data);
     markFormComplete("Basic Details");
     navigateToNextForm();
@@ -94,18 +101,26 @@ export default function BasicDetailsForm() {
             control={control}
             name="gender"
             rules={{ required: "Gender is required" }}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value || ""}>
-                <SelectTrigger id="gender">
-                  <SelectValue placeholder="Select gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
+            render={({ field }) => {
+             
+              return (
+                <Select
+                  value={field.value ?? ""}
+                  onValueChange={(val) => {
+                    if(val) field.onChange(val);
+                  }}
+                >
+                  <SelectTrigger id="gender">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              );
+            }}
           />
           {errors.gender && (
             <p className="text-sm text-red-500">{errors.gender.message}</p>
