@@ -41,7 +41,7 @@ export default function RootLayout({
               </header>
               <div className="flex flex-1 flex-col gap-4 p-8 pt-8">
                 {children}
-                <Toaster richColors position="top-right" />
+                <Toaster richColors position="bottom-right" />
               </div>
             </SidebarInset>
           </FormProvider>

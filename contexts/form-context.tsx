@@ -61,6 +61,7 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
       toast.success("Thank You. You can move to next step!!");
     } else {
       router.push("/completion");
+      toast.success("All steps completed!!");
     }
   };
 

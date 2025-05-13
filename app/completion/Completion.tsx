@@ -41,7 +41,7 @@ export default function Completion() {
             <Button
               onClick={() => router.push("/dashboard")}
               variant="outline"
-              className="flex-1 cursor-pointer"
+              className="flex-1 cursor-pointer hover:bg-purple-900 hover:text-white"
             >
               Go to Dashboard
             </Button>
