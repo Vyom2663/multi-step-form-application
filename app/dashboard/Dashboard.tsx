@@ -14,7 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { useFormContextCustom } from "@/contexts/form-context";
-import { CheckCircle, Circle, Edit3, PlayCircle } from "lucide-react";
+import { CheckCircle, Circle, Edit3, PlayCircle,Lock } from "lucide-react";
 import { motion } from "framer-motion";
 import React from "react";
 
@@ -149,7 +149,7 @@ export default function Dashboard() {
                           variant="outline"
                           className="flex items-center space-x-2 opacity-50 cursor-not-allowed"
                         >
-                          <PlayCircle className="w-4 h-4" />
+                          <Lock className="w-4 h-4" />
                           <span>Locked</span>
                         </Button>
                       )}

@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { toast } from "sonner";
+import LoadingSpinner from "./loading";
 
 const formOrder = [
   "Basic Details",
@@ -43,6 +45,7 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [currentForm, setCurrentForm] = useState(formOrder[0]);
   const [completedForms, setCompletedForms] = useState<string[]>([]);
+  const [hasCheckedAccess, setHasCheckedAccess] = useState(false);
 
   const markFormComplete = (formName: string) => {
     const updated = [...new Set([...completedForms, formName])];
@@ -55,6 +58,7 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
     if (currentIndex < formOrder.length - 1) {
       const nextForm = formOrder[currentIndex + 1];
       router.push(formRoutes[nextForm]);
+      toast.success("Thank You. You can move to next step!!");
     } else {
       router.push("/completion");
     }
@@ -96,18 +100,24 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const found = formOrder.find((name) => formRoutes[name] === pathname);
-    if (!found) return;
+    if (!found) {
+      setHasCheckedAccess(true);
+      return;
+    }
 
     const index = formOrder.indexOf(found);
 
     if (index === 0 || completedForms.includes(formOrder[index - 1])) {
       setCurrentForm(found);
+      setHasCheckedAccess(true);
     } else {
       const lastUnlockedIndex = completedForms.length;
       const lastUnlockedForm = formOrder[Math.max(0, lastUnlockedIndex)];
       router.push(formRoutes[lastUnlockedForm]);
     }
   }, [pathname, completedForms, router]);
+
+  if (!hasCheckedAccess) return <LoadingSpinner />;
 
   return (
     <FormContext.Provider
