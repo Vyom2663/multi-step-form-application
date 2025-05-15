@@ -31,12 +31,22 @@ export function NavForms({
           return (
             <SidebarMenuItem
               key={item.name}
-              className={isActive ? "bg-black text-white rounded-3xl" : ""}
+              className={
+                isActive
+                  ? "bg-black text-white hover:text-black rounded-3xl"
+                  : ""
+              }
             >
               <SidebarMenuButton asChild tooltip={item.name}>
                 <a href={item.url}>
                   <item.icon />
-                  <span className={isActive ? "text-white" : "text-violet-900"}>
+                  <span
+                    className={
+                      isActive
+                        ? ""
+                        : "text-violet-900"
+                    }
+                  >
                     {item.name}
                   </span>
                 </a>
